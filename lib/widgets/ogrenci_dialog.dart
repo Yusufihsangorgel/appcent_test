@@ -3,80 +3,81 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class OgrenciDialog extends StatefulWidget {
+class OgrenciDialog extends StatelessWidget {
+  final List<bool> isSelected;
   final void Function() onPressed;
   final TextEditingController ogrTextEditingController;
   final TextEditingController yasTextEditingController;
-  const OgrenciDialog(
+  OgrenciDialog(
       {Key? key,
       required this.ogrTextEditingController,
       required this.yasTextEditingController,
-      required this.onPressed})
+      required this.onPressed, required this.isSelected})
       : super(key: key);
 
-  @override
-  State<OgrenciDialog> createState() => _OgrenciDialogState();
-}
 
-class _OgrenciDialogState extends State<OgrenciDialog> {
-  bool value = true;
-  List isSelected = [false, true];
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: Colors.black,
       onPressed: () {
-        Get.dialog(Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildDetailString(),
-              BuildTextFormField(
-                controller: widget.ogrTextEditingController,
-                text: "Öğrenci Adı",
-                textInputType: TextInputType.text,
-                textInputFormatter: [
-                  FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))
+        Get.dialog(
+        Scaffold(
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildDetailString(),
+                  BuildTextFormField(
+                    controller: ogrTextEditingController,
+                    text: "Öğrenci Adı",
+                    textInputType: TextInputType.text,
+                    textInputFormatter: [
+                      FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  BuildTextFormField(
+                    controller: yasTextEditingController,
+                    text: "Öğrenci Yaşı",
+                    textInputType: TextInputType.number,
+                    textInputFormatter: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ToggleButtons(
+                      children: <Widget>[
+                        Text("Yazılım Mühendisliği"),
+                        Text("Bilgisayar Mühendisliği"),
+                      ],
+                      onPressed: (int index) {
+                       isSelected[index] = !isSelected[index];
+                      },
+                      isSelected: isSelected,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  buildUyariMessage(),
+                  buildTextButton(),
                 ],
               ),
-              BuildTextFormField(
-                controller: widget.yasTextEditingController,
-                text: "Öğrenci Yaşı",
-                textInputType: TextInputType.number,
-                textInputFormatter: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                ],
-              ),
-              // ToggleButtons(
-              //   children: <Widget>[
-              //     Text("Yazılım Mühendisliği"),
-              //     Text("Bilgisayar Mühendisliği"),
-              //   ],
-              //   onPressed: (int index) {
-              //     setState(() {
-              //       isSelected[index] = !isSelected[index];
-              //     });
-              //   },
-              //   isSelected: isSelected,
-              // ),
-              buildUyariMessage(),
-              buildTextButton(),
-              buildAndroidSwitch(),
-            ],
-          ),
-        ));
+            ),
+          
+        );
       },
       child: const Icon(Icons.add),
     );
   }
-
-  Widget buildAndroidSwitch() => Transform.scale(
-        scale: 2,
-        child: Switch(
-          value: value,
-          onChanged: (value) => setState(() => this.value = value),
-        ),
-      );
 
   Padding buildUyariMessage() {
     return Padding(
@@ -102,7 +103,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         "Oluştur",
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: widget.onPressed,
+      onPressed: onPressed,
     );
   }
 

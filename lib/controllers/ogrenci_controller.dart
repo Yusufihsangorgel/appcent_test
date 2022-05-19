@@ -4,6 +4,10 @@ import 'package:get/get.dart';
 import 'dart:math';
 
 class OgrenciController extends GetxController {
+  
+  //Hangi mühendisliğe atama yapılacağını seçmek için
+  List<bool> isSelected = [false, false].obs;
+  
   // bölümlerin listeleri modele uygun şekilde oluşturuldu
   var yazilimMuhList = <OgrenciModel>[].obs;
   var bilgisayarMuhList = <OgrenciModel>[].obs;

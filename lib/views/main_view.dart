@@ -16,48 +16,62 @@ class MainView extends StatelessWidget {
         TextEditingController();
     final OgrenciController ogrenciController = Get.put(OgrenciController());
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: const Text('Not Sayfası'),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                  itemCount: ogrenciController.yazilimMuhList.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                        title: ogrenciController.yazilimMuhList.length > 0
-                            ? Text(ogrenciController.yazilimMuhList[index].isim)
-                            : Text("anan"));
-                  }),
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('Not Sayfası'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                itemCount: ogrenciController.yazilimMuhList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                      title: ogrenciController.yazilimMuhList.length > 0
+                          ? Text(ogrenciController.yazilimMuhList[index].isim)
+                          : Text("anan"));
+                }),
+          ),
+        ],
+      ),
+      floatingActionButton: Obx(
+        () => OgrenciDialog(
+          ogrTextEditingController: ogrTextEditingController,
+          yasTextEditingController: yasTextEditingController,
+          isSelected: [
+            ogrenciController.isSelected[0],
+            ogrenciController.isSelected[1]
           ],
+          onPressed: () {
+            ogrenciController.notUret(); //Random not üretildi
+
+            ogrenciController.yazilimOgrEkle(
+                ogrTextEditingController.text,
+                int.parse(yasTextEditingController.text),
+                ogrenciController.uretilenNot.value
+                    .toString()); //Öğrenci oluşturulup not atandı
+
+            ogrenciController
+                .notlariHesapla(); //Notlar harflendirme kriterlerine göre listelerine atandı
+
+            ogrenciController.sirala(); //Notlara göre öğrenciler sıralandı
+
+            ogrenciController
+                .ortalamaHesapla(); //Bölümlerin not ortalamaları hesaplandı
+
+            ogrenciController
+                .maxOgrenciChange(); // En yüksek not alanların notları rakam yerine harfe atandı
+
+            ogrenciController
+                .minOgrenciChange(); // En düşük not alanların notları rakam yerine harfe atandı
+            Get.snackbar(
+                "Başarılı", "Öğrenci Oluşturuldu ve Not Ataması Yapıldı",
+                colorText: Colors.white, backgroundColor: Colors.black);
+            Timer.periodic(const Duration(seconds: 1),
+                (Timer t) => Get.to(const MainView()));
+          },
         ),
-        floatingActionButton: OgrenciDialog(
-            ogrTextEditingController: ogrTextEditingController,
-            yasTextEditingController: yasTextEditingController,
-            onPressed: () {
-              ogrenciController.notUret(); //Random not üretildi
-              ogrenciController.yazilimOgrEkle(
-                  ogrTextEditingController.text,
-                  int.parse(yasTextEditingController.text),
-                  ogrenciController.uretilenNot.value
-                      .toString()); //Öğrenci oluşturulup not atandı
-              ogrenciController
-                  .notlariHesapla(); //Notlar harflendirme kriterlerine göre listelerine atandı
-              ogrenciController.sirala(); //Notlara göre öğrenciler sıralandı
-              ogrenciController
-                  .ortalamaHesapla(); //Bölümlerin not ortalamaları hesaplandı
-              ogrenciController
-                  .maxOgrenciChange(); // En yüksek not alanların notları rakam yerine harfe atandı
-              ogrenciController
-                  .minOgrenciChange(); // En düşük not alanların notları rakam yerine harfe atandı
-              Get.snackbar(
-                  "Başarılı", "Öğrenci Oluşturuldu ve Not Ataması Yapıldı",
-                  colorText: Colors.white, backgroundColor: Colors.black);
-              Timer.periodic(const Duration(seconds: 1),
-                  (Timer t) => Get.to(const MainView()));
-            }));
+      ),
+    );
   }
 }
