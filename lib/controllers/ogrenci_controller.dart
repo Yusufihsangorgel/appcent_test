@@ -13,7 +13,7 @@ class OgrenciController extends GetxController {
   int max = 100;
 
   //random sınıfı çağırıldı
-  Random random = new Random();
+  Random random = Random();
 
   //random üretilecek not sonradan ataması yapılacak
   var uretilenNot = 0.obs;
@@ -73,11 +73,6 @@ class OgrenciController extends GetxController {
 
   //Not harflendirmesi yapıldı
   void notlariHesapla() {
-    aList.clear();
-    bList.clear();
-    cList.clear();
-    dList.clear();
-    fList.clear();
     for (var ogrenci in yazilimMuhList) {
       if (int.parse(ogrenci.not) >= 80) {
         aList.add(ogrenci);
