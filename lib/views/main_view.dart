@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:appcent_test/controllers/ogrenci_controller.dart';
 import 'package:appcent_test/widgets/ogrenci_dialog.dart';
 import 'package:flutter/material.dart';
@@ -8,26 +10,40 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController textEditingController = TextEditingController();
+  final TextEditingController ogrTextEditingController = TextEditingController();
+  final TextEditingController yasTextEditingController = TextEditingController();
     final OgrenciController ogrenciController = Get.put(OgrenciController());
     return Scaffold(
+
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: const Text('Not Sayfası'),
       ),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
-                itemCount: 10,
+                itemCount: ogrenciController.yazilimMuhList.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text('${index}'),
+                    title: ogrenciController.yazilimMuhList.length>1 ? Text(ogrenciController.yazilimMuhList[index].isim) : Text("anan")
                   );
                 }),
           ),
         ],
       ),
-      floatingActionButton: OgrenciDialog(textEditingController: textEditingController)
+      floatingActionButton: OgrenciDialog(ogrTextEditingController: ogrTextEditingController, yasTextEditingController: yasTextEditingController, onPressed: (){
+        print(ogrTextEditingController);
+        print(yasTextEditingController);
+        ogrenciController.notUret();
+        // ogrenciController.yazilimOgrEkle(ogrTextEditingController.toString(), int.parse(yasTextEditingController.toString()), ogrenciController.uretilenNot.value.toString());
+         Get.snackbar(
+                      "Başarılı", "Öğrenci Oluşturuldu ve Not Ataması Yapıldı",
+                    colorText: Colors.white,
+                      backgroundColor: Colors.black);
+                 Timer.periodic(const Duration(seconds: 1),  (Timer t) => Get.to(const MainView()));
+      })
     );
   }
 }
+
