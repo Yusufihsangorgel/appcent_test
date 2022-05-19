@@ -44,6 +44,7 @@ class OgrenciController extends GetxController {
     super.onClose();
   }
 
+
   //Yazılım bölümü öğrencileri eklenecek
   void yazilimOgrEkle(String isim, int yas, String not) {
     if (yazilimMuhList.length > 12) {
