@@ -80,7 +80,7 @@ class OgrenciController extends GetxController {
 
   //Not harflendirmesi yapıldı
   void yazilimNotlariHesapla() {
-    print("31");
+    
     for (var ogrenci in yazilimMuhList) {
       if (double.parse(ogrenci.not) >= 80.00) {
         aList.add(ogrenci);
@@ -97,7 +97,7 @@ class OgrenciController extends GetxController {
   }
 //Not harflendirmesi yapıldı
   void bilgisayarNotlariHesapla(){
-      print("32");
+    
 for (var ogrenci in bilgisayarMuhList) {
       if (double.tryParse(ogrenci.not)! >= 80.00) {
         aList.add(ogrenci);
@@ -115,7 +115,7 @@ for (var ogrenci in bilgisayarMuhList) {
 
   //Sıralama hesaplama yapıldı
   void sirala() {
-      print("33");
+  
     yazilimMuhList.sort((a, b) => a.not.compareTo(b.not));
     bilgisayarMuhList.sort((a, b) => a.not.compareTo(b.not));
   }
@@ -137,14 +137,14 @@ for (var ogrenci in bilgisayarMuhList) {
   }
 
   void maxOgrenciChange() {
-      print("41");
+
     for (var ogrenci in aList) {
       ogrenci.not = "A";
     }
   }
 
   void minOgrenciChange() {
-      print("42");
+  
     for (var ogrenci in fList) {
       ogrenci.not = "F";
     }
