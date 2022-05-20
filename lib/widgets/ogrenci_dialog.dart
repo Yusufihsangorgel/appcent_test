@@ -1,16 +1,14 @@
 import 'package:appcent_test/controllers/ogrenci_controller.dart';
 import 'package:appcent_test/widgets/ogrenci_form.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'dart:io' show Platform;
 
 class OgrenciDialog extends StatelessWidget {
   final void Function() onPressed;
   final TextEditingController ogrTextEditingController;
   final TextEditingController yasTextEditingController;
-  OgrenciDialog({
+  const OgrenciDialog({
     Key? key,
     required this.ogrTextEditingController,
     required this.yasTextEditingController,
@@ -32,38 +30,63 @@ class OgrenciDialog extends StatelessWidget {
               content: Card(
                 elevation: 0,
                 color: Colors.transparent,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BuildTextFormField(
-                      controller: ogrTextEditingController,
-                      text: "Öğrenci Adı",
-                      textInputType: TextInputType.text,
-                      textInputFormatter: [
-                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    BuildTextFormField(
-                      controller: yasTextEditingController,
-                      text: "Öğrenci Yaşı",
-                      textInputType: TextInputType.number,
-                      textInputFormatter: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Obx(() => buildTogglebuttons(ogrenciController)),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    buildUyariMessage(),
-                    buildTextButton(),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BuildTextFormField(
+                        controller: ogrTextEditingController,
+                        text: "Öğrenci Adı",
+                        textInputType: TextInputType.text,
+                        textInputFormatter: [
+                          FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      BuildTextFormField(
+                        controller: yasTextEditingController,
+                        text: "Öğrenci Yaşı",
+                        textInputType: TextInputType.number,
+                        textInputFormatter: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Obx(() => buildTogglebuttons(ogrenciController)),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      buildUyariMessage(),
+                      buildTextButton(),
+                      TextButton(
+                          onPressed: () {
+                           
+                
+                            ogrenciController
+                                .ortalamaHesapla(); //Bölümlerin not ortalamaları hesaplandı
+                            ogrenciController.yazilimNotlariHesapla();
+                            ogrenciController
+                                .bilgisayarNotlariHesapla(); //Notlar harflendirme kriterlerine göre listelerine atandı
+                
+                                 ogrenciController
+                                .sirala(); //Notlara göre öğrenciler sıralandı
+                
+                            ogrenciController
+                                .maxOgrenciChange(); // En yüksek not alanların notları rakam yerine harfe atandı
+                
+                            ogrenciController
+                                .minOgrenciChange(); // En düşük not alanların notları rakam yerine harfe atandı
+                              //                 Get.snackbar("Başarılı", "Öğrenci Oluşturuldu ve Not Ataması Yapıldı",
+                              // colorText: Colors.white, backgroundColor: Colors.black);
+                            Get.back();
+                          },
+                          child: const Text("Geri Dön"))
+                    ],
+                  ),
                 ),
               ),
             );

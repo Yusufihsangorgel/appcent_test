@@ -4,10 +4,9 @@ import 'package:get/get.dart';
 import 'dart:math';
 
 class OgrenciController extends GetxController {
-  
   //Hangi mühendisliğe atama yapılacağını seçmek için
   List<bool> isSelected = [false, false].obs;
-  
+
   // bölümlerin listeleri modele uygun şekilde oluşturuldu
   var yazilimMuhList = <OgrenciModel>[].obs;
   var bilgisayarMuhList = <OgrenciModel>[].obs;
@@ -44,13 +43,14 @@ class OgrenciController extends GetxController {
     super.onClose();
   }
 
-
   //Yazılım bölümü öğrencileri eklenecek
   void yazilimOgrEkle(String isim, int yas, String not) {
-    if (yazilimMuhList.length > 12) {
+    if (yazilimMuhList.length > 11) {
       Get.snackbar(
         'Uyari',
         'Yazilim Mühendisliği bölümüne 12 den fazla öğrenci eklenemez',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
         icon: const Icon(Icons.error),
       );
     } else {
@@ -60,10 +60,12 @@ class OgrenciController extends GetxController {
 
   //Bilgisayar bölümü öğrencileri eklenecek
   void bilgisayarOgrEkle(String isim, int yas, String not) {
-    if (bilgisayarMuhList.length > 18) {
+    if (bilgisayarMuhList.length > 17) {
       Get.snackbar(
         'Uyari',
         'Bilgisayar Mühendisliği bölümüne 18 den fazla öğrenci eklenemez',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
         icon: const Icon(Icons.error),
       );
     } else {
@@ -77,28 +79,33 @@ class OgrenciController extends GetxController {
   }
 
   //Not harflendirmesi yapıldı
-  void notlariHesapla() {
+  void yazilimNotlariHesapla() {
+    print("31");
     for (var ogrenci in yazilimMuhList) {
-      if (int.parse(ogrenci.not) >= 80) {
+      if (double.parse(ogrenci.not) >= 80.00) {
         aList.add(ogrenci);
-      } else if (int.parse(ogrenci.not) >= 60) {
+      } else if (double.parse(ogrenci.not) >= 60.00) {
         bList.add(ogrenci);
-      } else if (int.parse(ogrenci.not) >= 40) {
+      } else if (double.parse(ogrenci.not) >= 40.00) {
         cList.add(ogrenci);
-      } else if (int.parse(ogrenci.not) >= 20) {
+      } else if (double.parse(ogrenci.not) >= 20.00) {
         dList.add(ogrenci);
       } else {
         fList.add(ogrenci);
       }
     }
-    for (var ogrenci in bilgisayarMuhList) {
-      if (int.parse(ogrenci.not) >= 80) {
+  }
+//Not harflendirmesi yapıldı
+  void bilgisayarNotlariHesapla(){
+      print("32");
+for (var ogrenci in bilgisayarMuhList) {
+      if (double.tryParse(ogrenci.not)! >= 80.00) {
         aList.add(ogrenci);
-      } else if (int.parse(ogrenci.not) >= 60) {
+      } else if (double.tryParse(ogrenci.not)! >= 60.00) {
         bList.add(ogrenci);
-      } else if (int.parse(ogrenci.not) >= 40) {
+      } else if (double.tryParse(ogrenci.not)! >= 40.00) {
         cList.add(ogrenci);
-      } else if (int.parse(ogrenci.not) >= 20) {
+      } else if (double.tryParse(ogrenci.not)! >= 20.00) {
         dList.add(ogrenci);
       } else {
         fList.add(ogrenci);
@@ -108,6 +115,7 @@ class OgrenciController extends GetxController {
 
   //Sıralama hesaplama yapıldı
   void sirala() {
+      print("33");
     yazilimMuhList.sort((a, b) => a.not.compareTo(b.not));
     bilgisayarMuhList.sort((a, b) => a.not.compareTo(b.not));
   }
@@ -115,26 +123,28 @@ class OgrenciController extends GetxController {
   //Ortalama hesaplama yapıldı
   void ortalamaHesapla() {
     for (var ogrenci in yazilimMuhList) {
-      yazilimOrt += int.parse(ogrenci.not);
+      yazilimOrt += double.tryParse(ogrenci.not)!;
     }
     for (var ogrenci in bilgisayarMuhList) {
-      bilgisayarOrt += int.parse(ogrenci.not);
+      bilgisayarOrt += double.tryParse(ogrenci.not)!;
     }
     yazilimOrt = yazilimOrt / yazilimMuhList.length;
     bilgisayarOrt = bilgisayarOrt / bilgisayarMuhList.length;
     genelOrt = (yazilimOrt + bilgisayarOrt) / 2;
-    print(yazilimOrt);
-    print(bilgisayarOrt);
-    print(genelOrt);
+    print(" Güncel yazilim ort : $yazilimOrt");
+    print(" Güncel bilgisayar ort : $bilgisayarOrt");
+    print(" Güncel genel ort : $genelOrt");
   }
 
   void maxOgrenciChange() {
+      print("41");
     for (var ogrenci in aList) {
       ogrenci.not = "A";
     }
   }
 
   void minOgrenciChange() {
+      print("42");
     for (var ogrenci in fList) {
       ogrenci.not = "F";
     }

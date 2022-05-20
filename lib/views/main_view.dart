@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:appcent_test/controllers/ogrenci_controller.dart';
+import 'package:appcent_test/views/bilgisayar_muh_view.dart';
+import 'package:appcent_test/views/genel_muh_view.dart';
+import 'package:appcent_test/views/harfnot_siralamali.dart';
+import 'package:appcent_test/views/yazilim_muh_view.dart';
 import 'package:appcent_test/widgets/ogrenci_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,22 +24,57 @@ class MainView extends StatelessWidget {
         backgroundColor: Colors.black,
         title: const Text('Öğrenci Not Sistemi App'),
       ),
-      body: Column(
-        
-        children: [
-          BuildContainerWithText(text: "Yazılım Mühendisliği için tıklayın",onPressed: (){},),
-          BuildContainerWithText(text: "Yazılım Mühendisliği için tıklayın",onPressed: (){},),
-          BuildContainerWithText(text: "Yazılım Mühendisliği için tıklayın",onPressed: (){},),
-           Positioned(
-            top: 100,
-height: 100,
-
-             child: Container(
-              child:
-                  Text("Öğrenci Eklemek için aşağıdaki butonu kullanınız"),
-                     ),
-           ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: Get.height * 0.05,
+            ),
+            BuildContainerWithText(
+              text: "Yazılım Mühendisliği için tıklayın",
+              onPressed: () {
+                Get.to(const YazilimMuh());
+              },
+            ),
+            SizedBox(
+              height: Get.height * 0.05,
+            ),
+            BuildContainerWithText(
+              text: "Bilgisayar Mühendisliği için tıklayın",
+              onPressed: () {
+                Get.to(const BilgisayarMuh());
+              },
+            ),
+            SizedBox(
+              height: Get.height * 0.05,
+            ),
+            BuildContainerWithText(
+              text: "Harf Notlu Sıralaması için tıklayın",
+              onPressed: () {
+                Get.to(const HarfNotSiralama());
+              },
+            ),
+            SizedBox(
+              height: Get.height * 0.05,
+            ),
+            BuildContainerWithText(
+              text: "Tüm Mühendislik Sıralamaları için tıklayın",
+              onPressed: () {
+                Get.to(const GenelMuh());
+              },
+            ),
+            SizedBox(
+              height: Get.height * 0.2,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                child: Text("Öğrenci Eklemek için aşağıdaki butonu kullanınız"),
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: OgrenciDialog(
         ogrTextEditingController: ogrTextEditingController,
@@ -48,31 +87,20 @@ height: 100,
                 int.parse(yasTextEditingController.text),
                 ogrenciController.uretilenNot.value
                     .toString()); //Öğrenci oluşturulup not atandı
-          } else {
+          } else if (ogrenciController.isSelected[1] == true) {
             ogrenciController.bilgisayarOgrEkle(
                 ogrTextEditingController.text,
                 int.parse(yasTextEditingController.text),
                 ogrenciController.uretilenNot.value
                     .toString()); //Öğrenci oluşturulup not atandı
           }
+          else {
+            //error
 
-          ogrenciController
-              .notlariHesapla(); //Notlar harflendirme kriterlerine göre listelerine atandı
-
-          ogrenciController.sirala(); //Notlara göre öğrenciler sıralandı
-
-          ogrenciController
-              .ortalamaHesapla(); //Bölümlerin not ortalamaları hesaplandı
-
-          ogrenciController
-              .maxOgrenciChange(); // En yüksek not alanların notları rakam yerine harfe atandı
-
-          ogrenciController
-              .minOgrenciChange(); // En düşük not alanların notları rakam yerine harfe atandı
-          Get.snackbar("Başarılı", "Öğrenci Oluşturuldu ve Not Ataması Yapıldı",
-              colorText: Colors.white, backgroundColor: Colors.black);
-          Timer.periodic(const Duration(seconds: 1),
-              (Timer t) => Get.to(const MainView()));
+            Get.snackbar("Uyarı", "Lütfen bölüm seçiniz");
+          }
+          
+          
         },
       ),
     );
@@ -80,10 +108,12 @@ height: 100,
 }
 
 class BuildContainerWithText extends StatelessWidget {
-    final void Function() onPressed;
+  final void Function() onPressed;
   final String text;
   const BuildContainerWithText({
-    Key? key, required this.text, required this.onPressed,
+    Key? key,
+    required this.text,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
